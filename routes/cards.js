@@ -3,11 +3,18 @@ const fs = require('fs');
 const path = require('path');
 const router = express.Router();
 
-const cards = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/cards.json'), 'utf-8'));
+const cardsPath = (path.join(__dirname, '../data/cards.json'), 'utf-8');
 
 //GET all cards
 router.get('/', (req, res) => {
-  res.json(cards);
-});
+  fs.readFile(cardsPath, 'utf-8', (err, data) => {
+    if (err) {
+      return res.status(500).json({ message: 'Error reading cards data'});
+    }
+    const cards = JSON.parse(data);
+    res.json(cards);
+  });
+  });
+
 
 module.exports = router;
