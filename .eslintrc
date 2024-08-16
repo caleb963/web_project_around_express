@@ -2,7 +2,6 @@
   "extends": "airbnb-base",
   "rules": {
      "no-console": "off",
-     "no-underscore-dangle": "off",
-     "np-multiple-empty-lines": ["error", { "max": 2, "maxEOF": 1}]
+     "no-underscore-dangle": "off"
   }
 }
