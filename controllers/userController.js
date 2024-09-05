@@ -23,7 +23,7 @@ const getUserById = (req, res) => {
 // POST /users - creates a user
 const createUser = (req, res) => {
   const { name, about, avatar } = req.body;
-  User.create({ name, about, avatar})
+  User.create({ name, about, avatar })
     .then(user => res.status(201).json(user))
     .catch(err => res.status(400).json({ message: 'Error creating user', error: err}));
 };
