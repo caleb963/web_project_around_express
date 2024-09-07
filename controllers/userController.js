@@ -1,5 +1,6 @@
-const User = require('../models/user');
 const mongoose = require('mongoose');
+const User = require('../models/user');
+
 // GET /users - returns all users
 const getAllUsers = (req, res) => {
   User.find({})
@@ -35,12 +36,8 @@ const createUser = (req, res) => {
   const { name, about, avatar } = req.body;
   User.create({ name, about, avatar })
     .then(user => res.status(201).json(user))
-    .catch(err => {
-      if (err.name === 'ValidationError') {
-        return res.status(400).json({ message: 'Invalid Data', error: err});
-      }
-      res.status(500).json({ message: 'Error creating user', error: err});
-    });
+    .catch(err =>
+      res.status(500).json({ message: 'Error creating user', error: err}));
 };
 
 // PATCH /users/:userId - update a user by _id
@@ -48,10 +45,11 @@ const updateUser = (req, res) => {
   const { userId } = req.params;
   const { name, about } = req.body;
 
-  // validate if userId is a a valid is a valid ObjectId
-  if (!mongoose.Types.ObjectId.isValid(userId)) {
-    return res.status(400).json({ message: 'Invalid userID' });
-  }
+ // validate if userId is a valid ObjectId
+ if (!mongoose.Types.ObjectId.isValid(userId)) {
+  return res.status(400).json({ message: 'Invalid user ID' });
+}
+
 
   User.findByIdAndUpdate(userId, { name, about }, { new: true, runValidators: true})
     .orFail(() => {
@@ -73,7 +71,7 @@ const updateUser = (req, res) => {
 
 // PATCH /users/:userId/avatar - update a user's avatar by _id
 const updateUserAvatar = (req, res) => {
-  const { userId } = req.params;
+  const  userId  = req.params;
   const { avatar } = req.body;
 
   // validate if userId is a valid ObjectId

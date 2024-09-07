@@ -1,13 +1,15 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const cardRoutes = require('./routes/cards');
+const bodyParser = require('body-parser');
+const { updateUserProfile, updateUserAvatar } = require('./controllers/cardController');
+const { likeCard, dislikeCard } = require('./controllers/cardController');
 
 const app = express();
 
 
 
 // middleware for parsing JSON
-app.use(express.json());
+app.use(bodyParser.json());
 
 // connect to MONGODB
 mongoose.connect('mongodb://localhost:27017/aroundb', {
@@ -33,7 +35,13 @@ const cardsRouter = require('./routes/cards');
 
 // use the routers
 app.use('/users', usersRouter);
-app.use('/cards', cardRoutes);
+app.use('/cards', cardsRouter);
+
+// new routes
+app.patch('/users/me', updateUserProfile);
+app.patch('/users/me/avatar', updateUserAvatar);
+app.put('/cards/:cardId/likes', likeCard);
+app.delete('/cards/:cardId/likes', dislikeCard);
 
 
 // manage non-existing routes
