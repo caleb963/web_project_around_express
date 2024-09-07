@@ -1,13 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const { getAllUsers, getUserById,
-  createUser,
-  updateUser,
+const {updateUser,
   updateUserAvatar } = require('./controllers/userController');
-const { likeCard, dislikeCard,  getAllCards,
-  createCard,
-  deleteCard, } = require('./controllers/cardController');
+const { likeCard, dislikeCard } = require('./controllers/cardController');
 
 const app = express();
 
