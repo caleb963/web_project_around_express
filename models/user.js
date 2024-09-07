@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
-const { Schema } = mongoose;
 
 const urlRegex = /^(https?:\/\/)(www\.)?([a-zA-Z0-9._~:/?%#[\]@!$&'()*+,;=-]+)$/;
 
-const userSchema = new Schema({
+const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,

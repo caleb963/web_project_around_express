@@ -16,7 +16,12 @@ const createCard = (req, res) => {
   console.log(owner); // id will become accesible
   Card.create({ name, link, owner })
     .then(card => res.status(201).json(card))
-    .catch(err => res.status(400).json({ message: 'Error creating card', error: err}));
+    .catch(err => {
+      if (err.name === 'ValidationError') {
+        return res.status(400).json({ message: 'Invalid Data', error: err});
+      }
+      res.status(500).json({ message: 'Error creating card', error: err});
+    });
 };
 
 // DELETE /cards/:cardId - deletes a card by _id
@@ -29,14 +34,19 @@ const deleteCard = (req, res) => {
   }
 
   Card.findByIdAndDelete(cardId)
-    .then(card => {
-      if (!card) {
-        return res.status(404).json({ message: 'Card not found' });
-      }
-      res.status(200).json({ message: 'Card deleted successfully'});
+    .orFail(() => {
+      const error = new Error('Card not found');
+      error.statusCode = 404;
+      throw error;
     })
-    .catch(err => res.status(500).json({ message: 'Error deleting card', error: err}));
-};
+    .then(() => res.status(200).json({ message: 'Card deleted succesfully' }))
+    .catch(err =>{
+      if (err.statusCode === 400) {
+        return res.status(404).json({ message: err.message});
+      }
+      res.status(500).json({ message: 'Error deleting card', error: err});
+    });
+  };
 
 module.exports = {
   getAllCards,
