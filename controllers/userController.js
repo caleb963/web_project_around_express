@@ -71,7 +71,7 @@ const updateUser = (req, res) => {
 
 // PATCH /users/:userId/avatar - update a user's avatar by _id
 const updateUserAvatar = (req, res) => {
-  const  userId  = req.params;
+  const { userId } = req.params;
   const { avatar } = req.body;
 
   // validate if userId is a valid ObjectId

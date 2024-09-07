@@ -1,8 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const { updateUserProfile, updateUserAvatar } = require('./controllers/cardController');
-const { likeCard, dislikeCard } = require('./controllers/cardController');
+const { getAllUsers, getUserById,
+  createUser,
+  updateUser,
+  updateUserAvatar } = require('./controllers/userController');
+const { likeCard, dislikeCard,  getAllCards,
+  createCard,
+  deleteCard, } = require('./controllers/cardController');
 
 const app = express();
 
@@ -38,7 +43,7 @@ app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
 
 // new routes
-app.patch('/users/me', updateUserProfile);
+app.patch('/users/me', updateUser);
 app.patch('/users/me/avatar', updateUserAvatar);
 app.put('/cards/:cardId/likes', likeCard);
 app.delete('/cards/:cardId/likes', dislikeCard);
